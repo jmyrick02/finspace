@@ -9,4 +9,9 @@ class Date {
       : day = DateTime.now().day,
         month = DateTime.now().month,
         year = DateTime.now().year;
+
+  @override
+  String toString() {
+    return month.toString() + '/' + day.toString() + '/' + year.toString();
+  }
 }

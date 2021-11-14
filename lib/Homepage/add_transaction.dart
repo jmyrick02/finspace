@@ -54,6 +54,7 @@ class _AddTransactionState extends State<AddTransaction> {
             Padding(
               padding: const EdgeInsets.fromLTRB(8.0, 0, 8, 0),
               child: TextFormField(
+                keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   icon: Icon(Icons.money),
                   labelText: 'Amount',

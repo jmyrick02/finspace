@@ -2,6 +2,7 @@ import 'package:finspace/Homepage/add_transaction.dart';
 import 'package:finspace/Homepage/income_expense_overview.dart';
 import 'package:finspace/Homepage/transaction.dart';
 import 'package:finspace/Homepage/transaction_category.dart';
+import 'package:finspace/Homepage/transaction_log.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -72,7 +73,12 @@ class _HomeState extends State<Home> {
           ),
           IncomeExpenseOverview(_transactions),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => TransactionLog(_transactions)));
+            },
             child: const Text('Transaction Log'),
           )
         ],
@@ -115,7 +121,13 @@ class _HomeState extends State<Home> {
               SizedBox(
                 width: 150,
                 child: ElevatedButton(
-                  onPressed: () => {},
+                  onPressed: () => {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                TransactionLog(_transactions)))
+                  },
                   child: const Text('Transaction Log'),
                 ),
               ),
