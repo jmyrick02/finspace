@@ -1,3 +1,5 @@
+import 'package:finspace/Homepage/expenses.dart';
+import 'package:finspace/Homepage/income.dart';
 import 'package:finspace/Homepage/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
@@ -36,7 +38,12 @@ class IncomeExpenseOverview extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextButton(
-                  onPressed: () => {},
+                  onPressed: () => {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Income(transactions)))
+                  },
                   child: Text(
                     'Income: \$' + income_amount.toString(),
                     style: const TextStyle(
@@ -44,7 +51,12 @@ class IncomeExpenseOverview extends StatelessWidget {
                   ),
                 ),
                 TextButton(
-                  onPressed: () => {},
+                  onPressed: () => {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Expenses(transactions)))
+                  },
                   child: Text(
                     'Expenses: \$' + expense_amount.toString(),
                     style: const TextStyle(color: Colors.red),

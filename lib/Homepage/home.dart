@@ -1,4 +1,6 @@
 import 'package:finspace/Homepage/add_transaction.dart';
+import 'package:finspace/Homepage/expenses.dart';
+import 'package:finspace/Homepage/income.dart';
 import 'package:finspace/Homepage/income_expense_overview.dart';
 import 'package:finspace/Homepage/transaction.dart';
 import 'package:finspace/Homepage/transaction_category.dart';
@@ -107,14 +109,24 @@ class _HomeState extends State<Home> {
               SizedBox(
                 width: 150,
                 child: ElevatedButton(
-                  onPressed: () => {},
+                  onPressed: () => {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Income(_transactions)))
+                  },
                   child: const Text('Income'),
                 ),
               ),
               SizedBox(
                 width: 150,
                 child: ElevatedButton(
-                  onPressed: () => {},
+                  onPressed: () => {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Expenses(_transactions)))
+                  },
                   child: const Text('Expenses'),
                 ),
               ),
