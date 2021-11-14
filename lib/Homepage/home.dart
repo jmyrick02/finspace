@@ -1,11 +1,14 @@
 import 'package:finspace/Homepage/add_transaction.dart';
+import 'package:finspace/Homepage/date.dart';
 import 'package:finspace/Homepage/expenses.dart';
 import 'package:finspace/Homepage/income.dart';
 import 'package:finspace/Homepage/income_expense_overview.dart';
+import 'package:finspace/Homepage/period.dart';
 import 'package:finspace/Homepage/transaction.dart';
 import 'package:finspace/Homepage/transaction_category.dart';
 import 'package:finspace/Homepage/transaction_log.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -15,10 +18,50 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<Transaction> _transactions = [
-    Transaction.now(1, TransactionCategory.allowance),
-    Transaction.now(-2, TransactionCategory.food),
-  ];
+  String _name = '';
+  String _classYear = '';
+  String _school = '';
+  String _food = '';
+  String _creditHours = '';
+  String _housing = '';
+  List<Transaction> _transactions = [];
+
+  @override
+  void initState() {
+    super.initState();
+    load();
+  }
+
+  void load() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      _name = prefs.getString('name') ?? _name;
+      _classYear = prefs.getString('classYear') ?? _classYear;
+      _school = prefs.getString('school') ?? _school;
+      _food = prefs.getString('food') ?? _food;
+      _creditHours = prefs.getString('creditHours') ?? _creditHours;
+      _housing = prefs.getString('housing') ?? _housing;
+      _transactions = (prefs.getStringList('transactions') ?? <String>[])
+          .map((str) => parseTransactionString(str))
+          .toList();
+    });
+  }
+
+  Transaction parseTransactionString(String str) {
+    List<String> parts = str.split('|');
+    List<String> date_parts = parts[0].split('/');
+    return Transaction(
+      Date(int.tryParse(date_parts[0]) ?? -1, int.tryParse(date_parts[1]) ?? -1,
+          int.tryParse(date_parts[2]) ?? -1),
+      double.tryParse(parts[1]) ?? 0.0,
+      TransactionCategory.values
+          .firstWhere((element) => element.toString() == parts[2]),
+      period:
+          Period.values.firstWhere((element) => element.toString() == parts[3]),
+      description: parts[4],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,16 +84,16 @@ class _HomeState extends State<Home> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const Text(
-                    'John Doe',
+                  Text(
+                    _name,
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  const Text(
-                    'Sophomore',
+                  Text(
+                    _classYear,
                     style: TextStyle(fontSize: 20),
                   ),
-                  const Text(
-                    'Computer Science',
+                  Text(
+                    _school,
                     style: TextStyle(fontSize: 20),
                   ),
                   Text(
@@ -96,6 +139,12 @@ class _HomeState extends State<Home> {
           setState(() {
             _transactions.add(newTransaction);
           });
+          final prefs = await SharedPreferences.getInstance();
+
+          prefs.setStringList(
+              'transactions',
+              (prefs.getStringList('transactions') ?? ['']) +
+                  [newTransaction.toString()]);
         },
         child: const Icon(Icons.add),
       ),

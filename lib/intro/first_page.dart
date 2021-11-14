@@ -1,3 +1,4 @@
+import 'package:finspace/Homepage/home.dart';
 import 'package:finspace/settings/settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -63,17 +64,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
             prefs.setString('food', foodValue.toString());
             prefs.setString('creditHours', creditHoursValue.toString());
             prefs.setString('housing', campusValue.toString());
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => Settings(
-                    name: nameController.text,
-                    year: yearValue,
-                    major: schoolValue,
-                    housing: campusValue,
-                    food: foodValue,
-                    creditHours: creditHoursValue),
-              ),
-            );
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (context) => const Home(),
+            ));
           },
           pages: [
             PageViewModel(
@@ -286,7 +279,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                             flex: 1,
                             child: DropdownButton<String>(
                               value: campusValue,
-                              isDense: true,
+                              isDense: false,
                               onChanged: (String? newValue) {
                                 setState(() {
                                   campusValue = newValue;

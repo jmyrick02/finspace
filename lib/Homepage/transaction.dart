@@ -15,4 +15,17 @@ class Transaction {
   Transaction.now(this.amount, this.category,
       {this.period = Period.once, this.description = ''})
       : date = Date.now();
+
+  @override
+  String toString() {
+    return date.toString() +
+        '|' +
+        amount.toString() +
+        '|' +
+        category.toString() +
+        '|' +
+        period.toString() +
+        '|' +
+        description;
+  }
 }
