@@ -26,6 +26,7 @@ class Transaction {
         '|' +
         period.toString() +
         '|' +
-        description;
+        description +
+        ' ';
   }
 }

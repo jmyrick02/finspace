@@ -64,6 +64,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
             prefs.setString('food', foodValue.toString());
             prefs.setString('creditHours', creditHoursValue.toString());
             prefs.setString('housing', campusValue.toString());
+            prefs.setStringList('transactions', []);
             Navigator.of(context).pushReplacement(MaterialPageRoute(
               builder: (context) => const Home(),
             ));

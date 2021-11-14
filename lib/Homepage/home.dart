@@ -49,18 +49,23 @@ class _HomeState extends State<Home> {
   }
 
   Transaction parseTransactionString(String str) {
-    List<String> parts = str.split('|');
-    List<String> date_parts = parts[0].split('/');
-    return Transaction(
-      Date(int.tryParse(date_parts[0]) ?? -1, int.tryParse(date_parts[1]) ?? -1,
-          int.tryParse(date_parts[2]) ?? -1),
-      double.tryParse(parts[1]) ?? 0.0,
-      TransactionCategory.values
-          .firstWhere((element) => element.toString() == parts[2]),
-      period:
-          Period.values.firstWhere((element) => element.toString() == parts[3]),
-      description: parts[4],
-    );
+    try {
+      List<String> parts = str.split('|');
+      List<String> date_parts = parts[0].split('/');
+      return Transaction(
+        Date(
+            int.tryParse(date_parts[0]) ?? -1,
+            int.tryParse(date_parts[1]) ?? -1,
+            int.tryParse(date_parts[2]) ?? -1),
+        double.tryParse(parts[1]) ?? 0.0,
+        TransactionCategory.values
+            .firstWhere((element) => element.toString() == parts[2]),
+        period: Period.values
+            .firstWhere((element) => element.toString() == parts[3]),
+        description: parts[4],
+      );
+    } catch (e) {}
+    return Transaction.now(0, TransactionCategory.other);
   }
 
   @override
