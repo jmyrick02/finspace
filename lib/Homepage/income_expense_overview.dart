@@ -1,18 +1,30 @@
+import 'package:finspace/Homepage/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 
 class IncomeExpenseOverview extends StatelessWidget {
-  const IncomeExpenseOverview({Key? key}) : super(key: key);
+  final List<Transaction> transactions;
+
+  const IncomeExpenseOverview(this.transactions, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    double income_amount = 0;
+    double expense_amount = 0;
+    for (Transaction transaction in transactions) {
+      if (transaction.amount >= 0) {
+        income_amount += transaction.amount;
+      } else {
+        expense_amount -= transaction.amount;
+      }
+    }
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             PieChart(
-              dataMap: const {"Income": 1000, "Expenses": 500},
+              dataMap: {"Income": income_amount, "Expenses": expense_amount},
               animationDuration: const Duration(milliseconds: 1000),
               colorList: const [Colors.green, Colors.red],
               legendOptions: const LegendOptions(showLegends: false),
@@ -25,23 +37,23 @@ class IncomeExpenseOverview extends StatelessWidget {
               children: [
                 TextButton(
                   onPressed: () => {},
-                  child: const Text(
-                    'Income: \$1000',
-                    style: TextStyle(
+                  child: Text(
+                    'Income: \$' + income_amount.toString(),
+                    style: const TextStyle(
                         color: Colors.green, fontWeight: FontWeight.bold),
                   ),
                 ),
                 TextButton(
                   onPressed: () => {},
-                  child: const Text(
-                    'Expenses: \$500',
-                    style: TextStyle(color: Colors.red),
+                  child: Text(
+                    'Expenses: \$' + expense_amount.toString(),
+                    style: const TextStyle(color: Colors.red),
                   ),
                 ),
-                // ignore: prefer_const_constructors
                 TextButton(
                   onPressed: () => {},
-                  child: const Text('Net: \$500'),
+                  child: Text(
+                      'Net: \$' + (income_amount - expense_amount).toString()),
                 ),
               ],
             ),

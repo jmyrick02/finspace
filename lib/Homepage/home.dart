@@ -1,8 +1,21 @@
+import 'package:finspace/Homepage/add_transaction.dart';
 import 'package:finspace/Homepage/income_expense_overview.dart';
+import 'package:finspace/Homepage/transaction.dart';
+import 'package:finspace/Homepage/transaction_category.dart';
 import 'package:flutter/material.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  List<Transaction> _transactions = [
+    Transaction.now(1, TransactionCategory.allowance),
+    Transaction.now(-2, TransactionCategory.food),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -24,18 +37,28 @@ class Home extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: const [
-                  Text(
+                children: [
+                  const Text(
                     'John Doe',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  Text(
+                  const Text(
                     'Sophomore',
                     style: TextStyle(fontSize: 20),
                   ),
-                  Text(
+                  const Text(
                     'Computer Science',
                     style: TextStyle(fontSize: 20),
+                  ),
+                  Text(
+                    'Balance: \$' +
+                        _transactions
+                            .fold(
+                                0.0,
+                                (previousValue, element) =>
+                                    (previousValue as double) + element.amount)
+                            .toString(),
+                    style: const TextStyle(fontSize: 20),
                   ),
                 ],
               ),
@@ -47,15 +70,25 @@ class Home extends StatelessWidget {
             indent: 20,
             endIndent: 20,
           ),
-          const IncomeExpenseOverview(),
+          IncomeExpenseOverview(_transactions),
           ElevatedButton(
-            onPressed: () => {},
+            onPressed: () {},
             child: const Text('Transaction Log'),
           )
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => {},
+        onPressed: () async {
+          Transaction newTransaction = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => const AddTransaction(),
+                fullscreenDialog: true,
+              ));
+          setState(() {
+            _transactions.add(newTransaction);
+          });
+        },
         child: const Icon(Icons.add),
       ),
       drawer: SizedBox(
