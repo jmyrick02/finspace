@@ -1,11 +1,14 @@
-import 'package:finspace/main.dart';
+import 'package:finspace/settings/settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() => runApp(App());
+void main() {
+  runApp(App());
+}
 
 enum Year { freshman, sophomore, junior, senior }
 
@@ -16,10 +19,8 @@ class App extends StatelessWidget {
       SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.transparent),
     );
 
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Introduction screen',
-      theme: ThemeData(),
-      themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
       home: OnBoardingPage(),
     );
@@ -27,26 +28,17 @@ class App extends StatelessWidget {
 }
 
 class OnBoardingPage extends StatefulWidget {
+  const OnBoardingPage({Key? key}) : super(key: key);
+
   @override
   _OnBoardingPageState createState() => _OnBoardingPageState();
 }
 
 class _OnBoardingPageState extends State<OnBoardingPage> {
   TextEditingController nameController = TextEditingController();
-  TextEditingController ageController = TextEditingController();
-  TextEditingController waterController = TextEditingController();
-  TextEditingController heightController = TextEditingController();
-  TextEditingController weightController = TextEditingController();
-  int height = 100;
-  final ageKey = "age";
-  final waterKey = "waterIntake";
-  final heightKey = "height";
-  final weightKey = "weight";
-  final nameKey = "name";
-  final imgPathKey = "imgPath";
   Year? classYear = Year.freshman;
   bool truthVal = true;
-  var dropDownTemplate;
+  var schoolValue;
   var foodValue;
   var creditHoursValue;
   var yearValue;
@@ -63,10 +55,23 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: SafeArea(
         child: IntroductionScreen(
-          onDone: () {
+          onDone: () async {
+            final prefs = await SharedPreferences.getInstance();
+            prefs.setString('name', nameController.text);
+            prefs.setString('classYear', yearValue.toString());
+            prefs.setString('school', schoolValue.toString());
+            prefs.setString('food', foodValue.toString());
+            prefs.setString('creditHours', creditHoursValue.toString());
+            prefs.setString('housing', campusValue.toString());
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
-                builder: (context) => const MyApp(),
+                builder: (context) => Settings(
+                    name: nameController.text,
+                    year: yearValue,
+                    major: schoolValue,
+                    housing: campusValue,
+                    food: foodValue,
+                    creditHours: creditHoursValue),
               ),
             );
           },
@@ -220,11 +225,11 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                           Flexible(
                             flex: 1,
                             child: DropdownButton<String>(
-                              value: dropDownTemplate,
+                              value: schoolValue,
                               isDense: true,
                               onChanged: (String? newValue) {
                                 setState(() {
-                                  dropDownTemplate = newValue;
+                                  schoolValue = newValue;
                                 });
                               },
                               items: [
@@ -253,9 +258,6 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                 ),
               ),
               decoration: getPageDecoration(),
-              // image: Center(
-              //   child: Image.asset("images/WaterLogo.png"),
-              // ),
             ),
             PageViewModel(
               title: "College Information",
@@ -420,23 +422,17 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                 ),
               ),
               decoration: getPageDecoration(),
-              // image: Center(
-              //   child: Image.asset("images/WaterLogo.png"),
-              // ),
             ),
             PageViewModel(
               title: "And we are done!",
-              body: "Click done to get saving :)",
-              // image: Center(
-              //   child: Image.asset("images/WaterLogo.png"),
-              // ),
+              body: "Click Done to start saving :P",
               decoration: getPageDecoration(),
             ),
           ],
           onChange: (int index) {
             FocusManager.instance.primaryFocus?.unfocus();
 
-            if (nameController.text.isNotEmpty && dropDownTemplate != null) {
+            if (nameController.text.isNotEmpty && schoolValue != null) {
               if (campusValue != null &&
                   foodValue != null &&
                   creditHoursValue != null) {

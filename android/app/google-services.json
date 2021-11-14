@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "313780827543",
+    "firebase_url": "https://ourspace-cfd96-default-rtdb.firebaseio.com",
+    "project_id": "ourspace-cfd96",
+    "storage_bucket": "ourspace-cfd96.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:313780827543:android:8fe633768181d3d39240d2",
+        "android_client_info": {
+          "package_name": "com.example.finspace"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "313780827543-314scs105jgseinvob9uum6r483a17r5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAwsRBJ6gUrpmqRKgi06n4Ru-Bl1_nrvk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "313780827543-314scs105jgseinvob9uum6r483a17r5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
